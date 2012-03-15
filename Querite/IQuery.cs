@@ -1,27 +1,49 @@
+using System;
 using System.Collections.Generic;
+using Ninject;
+using Ninject.Modules;
 
-namespace Querite
+namespace querite
 {
+    internal static class AppDomainExtensions
+    {
+        public static string ExecutingAssmeblyPath(this AppDomain appDomain)
+        {
+            return string.IsNullOrEmpty(appDomain.RelativeSearchPath)
+                       ? appDomain.BaseDirectory
+                       : appDomain.RelativeSearchPath;
+        }
+    }
+
     public interface IQuery<out TSource>
     {
         IEnumerable<TModel> Execute<TModel>(IAmQuery<TModel, TSource> query);
-        IQuery<TSource> Count(out int count);
+        IQuery<TSource> Count(Action<int> count);
     }
 
-    public class Query<TSource> : IQuery<TSource>
+    internal class Query<TSource> : IQuery<TSource>
     {
-        protected int Total;
-        protected TSource Source { get; set; }
+        protected Action<int> SetCount;
+        [Inject] protected TSource Source { get; set; }
 
         public IEnumerable<TModel> Execute<TModel>(IAmQuery<TModel, TSource> query)
         {
-            return query.Count(out Total).Query(Source);
+            return query.Count(SetCount).Apply(Source);
         }
 
-        public IQuery<TSource> Count(out int count)
+        public IQuery<TSource> Count(Action<int> count)
         {
-            count = Total;
+            SetCount = count;
             return this;
+        }
+    }
+
+    public class Querite : NinjectModule
+    {
+        public override void Load()
+        {
+            Bind(typeof (IQuery<>)).To(typeof (Query<>)).InRequestScope();
+            Kernel.Settings.InjectNonPublic = true;
         }
     }
 }

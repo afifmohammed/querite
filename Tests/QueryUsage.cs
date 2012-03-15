@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Querite;
+using Ninject;
+using querite;
 
 namespace Tests
 {
-    public interface IDataSource
+    public class DataSource
     {
-        IQueryable<T> Query<T>();
-    }
+        public DataSource()
+        {
+            Query = new List<string>();
+        }
 
-    public class Customer
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public bool Defaulted { get; set; }
+        public List<string> Query { get; set; }
     }
     
-    public class BadCreditCustomersQuery : AbstractQuery<Customer, IDataSource>
+    public class LongStringsQuery : AbstractQuery<string, DataSource>
     {
-        public override IEnumerable<Customer> Query(IDataSource source)
+        public int Length { get; set; }
+        public override IEnumerable<string> Apply(DataSource source)
         {
-            var matching = source.Query<Customer>().Where(x => x.Defaulted);
-            Total = matching.Count();
+            var matching = source.Query.Where(x => x.Length > Length).AsQueryable();
+            SetCount(matching.Count());
             return matching.Take(10);
         }
     }
@@ -30,11 +30,26 @@ namespace Tests
     [TestFixture]
     public class QueryUsage
     {
-        private IQuery<IDataSource> DataSourceQuery { get; set; }
+        [Test]
         public void DriveByDemo()
         {
-            int count;
-            var customers = DataSourceQuery.Count(out count).Execute(new BadCreditCustomersQuery());
+            int count = 0;
+            IEnumerable<string> matches;
+            using(var k = new StandardKernel())
+            {
+                k.Load<Querite>();
+                k.Bind<DataSource>().ToSelf().InSingletonScope();
+
+                k.Get<DataSource>().Query.AddRange(new [] {"ab", "long", "verylong", "12"});
+                matches = k.Get<IQuery<DataSource>>().Count(x => count = x).Execute(new LongStringsQuery {Length = 3});
+            }
+
+            Assert.AreEqual(2, count);
+            Assert.IsNotNull(matches);
+            Assert.IsTrue(matches.Count() == 2);
+            Assert.IsTrue(matches.Contains("long"));
+            Assert.IsTrue(matches.Contains("verylong"));
         }
     }
 }
+

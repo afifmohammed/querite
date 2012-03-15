@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Querite
+namespace querite
 {
     public abstract class AbstractQuery<TModel, TSource>  : IAmQuery<TModel, TSource>
     {
-        protected int Total { get; set; }
-        public abstract IEnumerable<TModel> Query(TSource source);
+        protected Action<int> SetCount { get; set; }
+        public abstract IEnumerable<TModel> Apply(TSource source);
         
-        public IAmQuery<TModel, TSource> Count(out int count)
+        public IAmQuery<TModel, TSource> Count(Action<int> count)
         {
-            count = Total;
+            SetCount = count;
             return this;
         }
     }
 
     public interface IAmQuery<out TModel, in TSource>
     {
-        IAmQuery<TModel, TSource> Count(out int total);
-        IEnumerable<TModel> Query(TSource source);
+        IAmQuery<TModel, TSource> Count(Action<int> count);
+        IEnumerable<TModel> Apply(TSource source);
     }
 }
