@@ -46,8 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppDomainExtensions.cs" />
-    <Compile Include="IAmQuery.cs" />
+    <Compile Include="IAmQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Querite.cs" />
