@@ -4,5 +4,4 @@ _Resharper.*/
 bin/
 obj/
 *.suo
-packages/
 *.user
