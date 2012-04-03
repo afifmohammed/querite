@@ -77,9 +77,9 @@
     <Compile Include="Conventions\IQueryAndLogConvention.cs" />
     <Compile Include="Conventions\IQueryConvention.cs" />
     <Compile Include="Conventions\IQueryFromCacheConvention.cs" />
+    <Compile Include="OverridableBindingGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Querite.cs" />
-    <Compile Include="Query.cs" />
     <Compile Include="DecorateByConvention\QueryAndCacheByConvention.cs" />
     <Compile Include="Decorators\QueryAndCacheDecorator.cs" />
     <Compile Include="DecorateByConvention\QueryAndLogByConvention.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="DecorateByConvention\DecorateQueryByEveryConvention.cs" />
     <Compile Include="DecorateByConvention\QueryFromCacheByConvention.cs" />
     <Compile Include="Decorators\QueryFromCacheDecorator.cs" />
+    <Compile Include="TypeToSelfForServiceBindingGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

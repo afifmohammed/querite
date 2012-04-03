@@ -19,6 +19,7 @@ namespace Tests
     public class LongStringsQuery : AbstractQuery<IEnumerable<string>, DataSource>
     {
         public int Length { get; set; }
+
         public override IEnumerable<string> Apply(DataSource source)
         {
             var matching = source.Query.Where(x => x.Length > Length).AsQueryable();
