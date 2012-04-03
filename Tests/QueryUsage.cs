@@ -16,7 +16,7 @@ namespace Tests
         public List<string> Query { get; set; }
     }
     
-    public class LongStringsQuery : AbstractQuery<string, DataSource>
+    public class LongStringsQuery : AbstractQuery<IEnumerable<string>, DataSource>
     {
         public int Length { get; set; }
         public override IEnumerable<string> Apply(DataSource source)
