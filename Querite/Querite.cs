@@ -21,6 +21,7 @@ namespace querite
             Kernel.BindPluggable<IQueryFromCacheConvention>(x => x.InSingletonScope());
             
             Kernel.BindPluggable<IQueryConvention>(x => x.InSingletonScope(), x => x.Excluding<EveryQueryConvention>());
+            Kernel.BindPluggable<CacheStoreFactory>(x => x.InSingletonScope());
 
             Kernel.Bind(
                 typeof (DecorateQueryBy<>), 
