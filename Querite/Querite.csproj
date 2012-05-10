@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{708E4581-64FB-4106-A84F-C7A289B3B72A}</ProjectGuid>
+    <ProjectGuid>{28835798-79C6-41A3-B461-404C50C85A7E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>querite</RootNamespace>
-    <AssemblyName>querite</AssemblyName>
+    <RootNamespace>Querite</RootNamespace>
+    <AssemblyName>Querite</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,23 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Configoo">
-      <HintPath>..\packages\configoo.1.0.8\lib\Configoo.dll</HintPath>
-    </Reference>
-    <Reference Include="Enyim.Caching">
-      <HintPath>..\packages\Membase.2.14\lib\net35\Enyim.Caching.dll</HintPath>
-    </Reference>
-    <Reference Include="Membase">
-      <HintPath>..\packages\Membase.2.14\lib\net35\Membase.dll</HintPath>
-    </Reference>
     <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.2.2.1.4\lib\net40-Full\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject.Extensions.Conventions">
-      <HintPath>..\packages\Ninject.Extensions.Conventions.2.2.0.5\lib\net40-Full\Ninject.Extensions.Conventions.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+      <HintPath>..\packages\Ninject.3.0.0.15\lib\net40\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,42 +43,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caching\InMemoryCacheStore.cs" />
-    <Compile Include="Caching\MemcachedClientFactory.cs" />
-    <Compile Include="Caching\MemcachedStore.cs" />
-    <Compile Include="Caching\MemcachedStoreFactory.cs" />
-    <Compile Include="Conventions\ICacheStoreInMemoryConvention.cs" />
-    <Compile Include="Conventions\KeywordInTypeOrNamespaceOrAttrConvention.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="IAmQuery.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Conventions\EveryQueryConvention.cs" />
-    <Compile Include="Caching\ICacheStore.cs" />
-    <Compile Include="Caching\CacheStoreFactory.cs" />
+    <Compile Include="CachedQuery.cs" />
+    <Compile Include="CacheStoreFactory.cs" />
+    <Compile Include="IAmQuery.cs" />
+    <Compile Include="ICacheStore.cs" />
+    <Compile Include="IFluentSyntax.cs" />
+    <Compile Include="IQueriteConvention.cs" />
     <Compile Include="IQuery.cs" />
-    <Compile Include="Conventions\IQueryAndCacheConvention.cs" />
-    <Compile Include="Conventions\IQueryAndLogConvention.cs" />
-    <Compile Include="Conventions\IQueryConvention.cs" />
-    <Compile Include="Conventions\IQueryFromCacheConvention.cs" />
-    <Compile Include="BindingGenerators\OverridableBindingGenerator.cs" />
+    <Compile Include="IQueryCustomizations.cs" />
+    <Compile Include="IQueryStatistics.cs" />
+    <Compile Include="LastQueryStats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Querite.cs" />
-    <Compile Include="DecorateByConvention\QueryAndCacheByConvention.cs" />
-    <Compile Include="Decorators\QueryAndCacheDecorator.cs" />
-    <Compile Include="DecorateByConvention\QueryAndLogByConvention.cs" />
-    <Compile Include="Decorators\QueryAndLogDecorator.cs" />
-    <Compile Include="Decorators\QueryDecorator.cs" />
-    <Compile Include="DecorateByConvention\DecorateQueryBy.cs" />
-    <Compile Include="DecorateByConvention\DecorateQueryByEveryConvention.cs" />
-    <Compile Include="DecorateByConvention\QueryFromCacheByConvention.cs" />
-    <Compile Include="Decorators\QueryFromCacheDecorator.cs" />
-    <Compile Include="BindingGenerators\ServiceTypeToSelfBindingGenerator.cs" />
+    <Compile Include="QueriteContainer.cs" />
+    <Compile Include="QueriteInternalExtensions.cs" />
+    <Compile Include="Query.cs" />
+    <Compile Include="AbstractQuery.cs" />
+    <Compile Include="QueryUsage.cs" />
+    <Compile Include="TimeHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

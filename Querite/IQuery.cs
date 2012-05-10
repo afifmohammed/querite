@@ -1,35 +1,12 @@
 using System;
 
-namespace querite
+namespace Querite
 {
-    public interface IQuery<out TSource>
+    public interface IQuery<out TSource> : IFluentSyntax
+        where TSource : class
     {
         TModel Execute<TModel>(IAmQuery<TModel, TSource> query);
-        IQuery<TSource> Count(Action<int> count);
-    }
-
-    internal class Query<TSource> : IQuery<TSource>
-    {
-        protected Action<int> SetCount;
-        protected readonly TSource Source;
-        private readonly DecorateQueryByEveryConvention _decorateQueryByConvention;
-
-        public Query(TSource source, DecorateQueryByEveryConvention decorateQueryByConvention)
-        {
-            Source = source;
-            _decorateQueryByConvention = decorateQueryByConvention;
-        }
-
-        public TModel Execute<TModel>(IAmQuery<TModel, TSource> query)
-        {
-            var decorated = _decorateQueryByConvention.Decorate(query);
-            return decorated.Count(SetCount).Apply(Source);
-        }
-
-        public IQuery<TSource> Count(Action<int> count)
-        {
-            SetCount = count;
-            return this;
-        }
+        IQuery<TSource> Customize(Action<IQueryCustomizations> customizationAction);
+        IQuery<TSource> Statistics(Action<IQueryStatistics> statisticsAction);
     }
 }
