@@ -27,7 +27,7 @@ namespace Querite.Tests
                 Thread.Sleep(1100);
                 var results = source.Contacts.Where(c => c.Contains(ContactContains)).OrderBy(c => c);
                 Count = results.Count();
-                return results.Skip(Skip).Take(Take);
+                return results.Skip(0).Take(3);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Querite.Tests
                 names = container.Query(myPhone)
                             .Statistics(x => count = x.Count)
                             .Statistics(x => timetaken = x.ExecutionSpan)
-                            .Execute(new MatchingNamesQuery { ContactContains = "n", Skip = 0, Take = 3 }).ToList();
+                            .Execute(new MatchingNamesQuery { ContactContains = "n"}).ToList();
             }
             
             Assert.That(names, Has.Count.EqualTo(3));
@@ -59,7 +59,7 @@ namespace Querite.Tests
 
             using(var container = new QueriteContainer())
             {
-                var matchinesNamesQuery = new MatchingNamesQuery { ContactContains = "n", Skip = 0, Take = 3 };
+                var matchinesNamesQuery = new MatchingNamesQuery { ContactContains = "n"};
                 var query = container.Query(myPhone);
 
                 query.Customize(x => x.CacheItFor = 3.Minutes())

@@ -6,9 +6,6 @@ namespace Querite
     public abstract class AbstractQuery<TModel, TSource> : IAmQuery<TModel, TSource>
         where TSource : class
     {
-        public int Skip { get; set; }
-        public int Take { get; set; }
-
         public TModel Apply(TSource source)
         {
             var timer = new Stopwatch();
