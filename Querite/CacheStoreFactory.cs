@@ -2,9 +2,9 @@ using System;
 
 namespace Querite
 {
-    internal class CacheStoreFactory
+    internal class CacheStoreFactory : IDisposable
     {
-        private readonly Func<Type, object> _resolver;
+        private Func<Type, object> _resolver;
 
         public CacheStoreFactory(Func<Type, object> resolver)
         {
@@ -14,6 +14,11 @@ namespace Querite
         public ICacheStore<TKey, TValue> Build<TKey, TValue>()
         {
             return _resolver(typeof (ICacheStore<TKey, TValue>)) as ICacheStore<TKey, TValue>;
+        }
+
+        public void Dispose()
+        {
+            _resolver = null;
         }
     }
 }

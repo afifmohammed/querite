@@ -2,7 +2,7 @@ using System;
 
 namespace Querite
 {
-    public interface IQuery<out TSource> : IFluentSyntax
+    public interface IQuery<out TSource> : IFluentSyntax, IDisposable
         where TSource : class
     {
         TModel Execute<TModel>(IAmQuery<TModel, TSource> query);

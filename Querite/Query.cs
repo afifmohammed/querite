@@ -2,19 +2,19 @@ using System;
 
 namespace Querite
 {
-    internal class Query<TSource> : IQuery<TSource> where TSource  : class
+    internal class Query<TSource> : IQuery<TSource>, IDisposable where TSource : class
     {
-        private readonly Func<DateTime> _now;
+        private Func<DateTime> _now;
         private readonly CacheStoreFactory _cacheStoreFactory;
-        private readonly TSource _source;
+        private Func<TSource> _getSource;
         private Action<IQueryCustomizations> _setCustomizations;
         private Action<IQueryStatistics> _setStatistics;
 
-        public Query(Func<DateTime> now, CacheStoreFactory cacheStoreFactory, TSource source)
+        public Query(Func<DateTime> now, CacheStoreFactory cacheStoreFactory, Func<TSource> getSource)
         {
             _now = now;
             _cacheStoreFactory = cacheStoreFactory;
-            _source = source;
+            _getSource = getSource;
             _setCustomizations = c => { };
             _setStatistics = s => { };
         }
@@ -29,7 +29,7 @@ namespace Querite
 
             _setCustomizations(customizedQuery);
             
-            var model = customizedQuery.Apply(_source);
+            var model = customizedQuery.Apply(_getSource());
             
             _setStatistics(customizedQuery);
             
@@ -46,6 +46,15 @@ namespace Querite
         {
             _setStatistics += statisticsAction;
             return this;
+        }
+
+        public void Dispose()
+        {
+            _cacheStoreFactory.Dispose();
+            _getSource = null;
+            _now = null;
+            _setCustomizations = null;
+            _setStatistics = null;
         }
     }
 }
