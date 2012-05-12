@@ -24,7 +24,7 @@ namespace Querite.Tests
             public string ContactContains { get; set; }
             protected override IEnumerable<string> OnApply(Phone source)
             {
-                Thread.Sleep(3100);
+                Thread.Sleep(1100);
                 var results = source.Contacts.Where(c => c.Contains(ContactContains)).OrderBy(c => c);
                 Count = results.Count();
                 return results.Skip(Skip).Take(Take);
@@ -47,7 +47,7 @@ namespace Querite.Tests
             }
             
             Assert.That(names, Has.Count.EqualTo(3));
-            Assert.That(timetaken.Value.TotalSeconds, Is.GreaterThan(3));
+            Assert.That(timetaken.Value.TotalSeconds, Is.GreaterThan(1));
             Assert.That(count, Is.EqualTo(3));
         }
 
@@ -71,7 +71,7 @@ namespace Querite.Tests
                      .Execute(matchinesNamesQuery);    
             }
             
-            Assert.That(timetaken.Value.TotalSeconds, Is.LessThan(3));
+            Assert.That(timetaken.Value.TotalSeconds, Is.LessThan(1));
         }
     }
 }
