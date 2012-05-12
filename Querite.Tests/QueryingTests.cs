@@ -38,12 +38,11 @@ namespace Querite.Tests
             int? count = null;
             TimeSpan? timetaken = null;
             IEnumerable<string> names;
-            using(var container = new QueriteContainer())
+            using(var query = new QueriteContainer().Query(myPhone))
             {
-                names = container.Query(myPhone)
-                            .Statistics(x => count = x.Count)
-                            .Statistics(x => timetaken = x.ExecutionSpan)
-                            .Execute(new MatchingNamesQuery { ContactContains = "n"}).ToList();
+                names = query.Statistics(x => count = x.Count)
+                             .Statistics(x => timetaken = x.ExecutionSpan)
+                             .Execute(new MatchingNamesQuery { ContactContains = "n"}).ToList();
             }
             
             Assert.That(names, Has.Count.EqualTo(3));
@@ -57,11 +56,10 @@ namespace Querite.Tests
             var myPhone = new Phone();
             TimeSpan? timetaken = null;
 
-            using(var container = new QueriteContainer())
+            using(var query = new QueriteContainer().Query(myPhone))
             {
                 var matchinesNamesQuery = new MatchingNamesQuery { ContactContains = "n"};
-                var query = container.Query(myPhone);
-
+                
                 query.Customize(x => x.CacheItFor = 3.Minutes())
                      .Statistics(x => timetaken = x.ExecutionSpan)
                      .Execute(matchinesNamesQuery);    
